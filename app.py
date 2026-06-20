@@ -85,6 +85,7 @@ with main_tab1:
             st.progress(prob_a)
             st.write(f"현재 전력 차이: **{abs(elo_a - elo_b)} Elo 포인트**")
             
+            # 🌟 오타 수정 완료: el_b에서 elo_b로 변경되었습니다.
             goal_diff = (elo_a - elo_b) / 250
             st.write(f"💡 **AI 분석:** {predict_a}가 약 {max(0, round(1.5 + goal_diff, 1))}골 내외를 기록할 것으로 예상됩니다.")
 
@@ -95,37 +96,4 @@ with main_tab1:
             team_a = st.selectbox("홈 팀", list(st.session_state.soccer_data.keys()), key="ta")
             team_b = st.selectbox("원정 팀", list(st.session_state.soccer_data.keys()), key="tb")
             score_a = st.number_input(f"{team_a} 득점", min_value=0, step=1, key="sa")
-            score_b = st.number_input(f"{team_b} 득점", min_value=0, step=1, key="sb")
-            
-            importance = st.select_slider("대회 중요도 (K-Factor)", options=[20, 30, 40, 60], value=30, 
-                                        help="친선경기: 20, 일반A매치: 30, 월드컵예선: 40, 월드컵본선: 60")
-            
-            submit_soccer = st.form_submit_button("랭킹 반영하기")
-            
-            if submit_soccer:
-                if team_a == team_b:
-                    st.error("서로 다른 국가를 선택하세요.")
-                else:
-                    r_a = st.session_state.soccer_data[team_a]
-                    r_b = st.session_state.soccer_data[team_b]
-                    
-                    actual = 1.0 if score_a > score_b else (0.5 if score_a == score_b else 0.0)
-                    new_a, new_b = update_elo(r_a, r_b, actual, k=importance)
-                    
-                    st.session_state.soccer_data[team_a] = new_a
-                    st.session_state.soccer_data[team_b] = new_b
-                    
-                    st.session_state.match_logs.append({
-                        "종목": "축구",
-                        "매치": f"{team_a} {score_a}:{score_b} {team_b}",
-                        "Elo 변동": f"{team_a}({r_a}➔{new_a}) | {team_b}({r_b}➔{new_b})"
-                    })
-                    st.success("데이터가 성공적으로 업데이트되었습니다!")
-                    st.rerun()
-
-# --- 탭 2: UFC 체급별 랭킹 ---
-with main_tab2:
-    st.info("왼쪽 사이드바에서 대결하려는 UFC 체급을 선택하고 경기 결과를 등록해 주세요.")
-    
-    # 사이드바 연동을 위한 체급 선택
-    ufc
+            score_b =
