@@ -45,12 +45,15 @@ st.sidebar.header("⚔️ 경기 결과 등록 (Match Update)")
 weight_class_input = st.sidebar.selectbox("대상 체급 선택", list(st.session_state.ufc_data.keys()))
 fighters_in_class = list(st.session_state.ufc_data[weight_class_input].keys())
 
+# 코드 수정 부분: `with` 블록 내부에서 서브밋 버튼을 호출해야 안전합니다.
 with st.sidebar.form(key='ufc_match_form', clear_on_submit=True):
     fighter_a = st.selectbox("블루 코너 (Fighter A)", fighters_in_class, index=0)
     fighter_b = st.selectbox("레드 코너 (Fighter B)", fighters_in_class, index=1 if len(fighters_in_class) > 1 else 0)
     
     result = st.radio("경기 결과", [f"{fighter_a} 승리 (피니시)", f"{fighter_a} 판정승", f"{fighter_b} 판정승", f"{fighter_b} 승리 (피니시)"])
-    submit_btn = st.sidebar.form_submit_button("체급 랭킹 즉시 반영")
+    
+    # 🌟 수정 완료: st.sidebar.form_submit_button이 아닌 st.form_submit_button을 사용합니다.
+    submit_btn = st.form_submit_button("체급 랭킹 즉시 반영")
 
 if submit_btn:
     if fighter_a == fighter_b:
@@ -108,7 +111,7 @@ with col2:
     st.subheader("🔍 파이터 정보 & 상세 프로필 동적 센터")
     selected_fighter = st.selectbox("조회할 파이터를 선택하세요", fighters_in_class)
     
-    # 🌟 사람을 선택하면 하단 탭 내용이 동적으로 변화하는 코어 로직
+    # 사람을 선택하면 하단 탭 내용이 동적으로 변화하는 코어 로직
     f_info = st.session_state.ufc_data[weight_class_input][selected_fighter]
     
     tab1, tab2, tab3 = st.tabs(["👤 기본 프로필", "📈 실시간 Elo 지표", "📜 전적 로그"])
